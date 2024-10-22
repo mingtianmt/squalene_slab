@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGL Viewer Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/ngl@2.0.0-dev.31/dist/ngl.js"></script>
+    <style>
+        /* 设置3D视图的尺寸 */
+        #viewport {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h2>Interactive 3D Molecular Viewer</h2>
+    <div id="viewport"></div>
+    <script>
+        // 初始化NGL Viewer的舞台
+        var stage = new NGL.Stage("viewport");
+        
+        // 加载分子结构文件
+        stage.loadFile("slab.pdb").then(function (o) {
+            // 为相邻的分子使用不同颜色
+            o.addRepresentation("licorice", { 
+                colorScheme: "residueindex"  // 根据分子的索引颜色
+            });
+            o.autoView();
+        });
+
+        // 在左下角添加坐标轴
+        stage.viewer.addAxes({
+            color: "blue",  // XYZ轴的颜色
+            scale: 1.0      // 坐标轴的缩放比例
+            // lineWidth: 2    // 轴线的宽度，增大以便更容易看到
+        });
+
+        // 处理窗口大小变化
+        window.addEventListener("resize", function(event) {
+            stage.handleResize();
+        }, false);
+    </script>
+</body>
+</html>
